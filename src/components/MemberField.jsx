@@ -1,14 +1,11 @@
 import React from "react";
-
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 
-function TrainerField({ trainerName, type, email, onEdit, onDelete, onView }) {
+function MemberField({ memberName, type, email, onEdit, onDelete, onView }) {
   return (
-    <div className="flex h-[55px] w-[1089] items-center justify-between p-4 border border-gray-300 rounded-lg ml-10 mt-4 mr-10">
-      {/* Trainer Name */}
-      <span className="text-lg font-medium text-gray-700">{trainerName}</span>
+    <div className="flex h-[55px] w-[1300px] items-center justify-between p-4 border border-gray-300 rounded-lg ml-10 mt-4">
+      <span className="text-lg font-medium text-gray-700">{memberName}</span>
 
-      {/* Type */}
       <span className="text-sm text-gray-500">{type}</span>
 
       <span className="text-sm text-gray-500">{email}</span>
@@ -38,7 +35,7 @@ function TrainerField({ trainerName, type, email, onEdit, onDelete, onView }) {
           className="text-[#E11D48] text-sm border-2 border-[#E11D48] p-2 w-[100px] h-[35px] items-center justify-center rounded-[10px]"
         >
           <div className="flex items-center justify-center">
-          <FaTrash className="mr-2" />
+            <FaTrash className="mr-2" />
             Delete
           </div>
         </button>
@@ -47,4 +44,4 @@ function TrainerField({ trainerName, type, email, onEdit, onDelete, onView }) {
   );
 }
 
-export default TrainerField;
+export default MemberField;

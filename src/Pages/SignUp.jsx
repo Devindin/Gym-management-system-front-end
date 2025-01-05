@@ -37,7 +37,6 @@ function SignUp() {
         >
           {({ errors, touched, handleChange, values }) => (
             <Form className="flex flex-col w-full space-y-5">
-              {/* Form Fields */}
               <InputField
                 label="Name"
                 name="Name"
@@ -71,13 +70,9 @@ function SignUp() {
                 handleChange={handleChange}
                 values={values}
               />
-
-              {/* Display Login Error */}
               {loginError && (
                 <p className="text-red-600 text-[12px] mt-1">{loginError}</p>
               )}
-
-              {/* Right Align Login Button */}
               <div className="flex justify-end mr-2">
                 <PrimaryButton
                   label="Sign Up"
@@ -87,7 +82,6 @@ function SignUp() {
                 />
               </div>
 
-              {/* Registration Link */}
               <div className="w-full flex flex-row justify-end mt-3 ">
                 <h5 className="text-[12px] text-white mr-2">
                 Already have an account?{" "}

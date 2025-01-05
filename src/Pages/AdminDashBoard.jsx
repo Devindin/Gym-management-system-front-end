@@ -1,4 +1,5 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MiniLogo from "../assets/MiniLogo.png";
 import Logo from "../assets/Logo.png";
 import DashBoardLogo from "../assets/DashBoard.png";
@@ -10,46 +11,60 @@ import Button from "../components/Button";
 import profile from "../assets/profile.png";
 
 function AdminDashBoard() {
+  const [currentDate, setCurrentDate] = useState("");
+  const [showAddPlanPopup, setShowAddPlanPopup] = useState(false);
+  const [showAddClassPopup, setShowAddClassPopup] = useState(false);
+  const [showAddTrainerPopup, setShowAddTrainerPopup] = useState(false);
+  const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
 
-    const [currentDate, setCurrentDate] = useState("");
+  const navigate = useNavigate();
+
+  const handlePlansClick = () => {
+    navigate("/plansAndClasses"); 
+  };
+
+  const handleTrainersClick = () => {
+    navigate("/trainers"); 
+  };
+
+  const handleMembersClick = () => {
+    navigate("/members"); 
+  };
+
+  const handleAdmindashboardClick = () => {
+    navigate("/admindashBoard"); 
+  };
+  
 
   useEffect(() => {
-    // Get current date and format it to "Jan 03, 2025"
     const date = new Date();
     const formattedDate = date.toLocaleDateString("en-US", {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
     setCurrentDate(formattedDate);
   }, []);
 
+  // Disable scroll
   useEffect(() => {
-    // Disable scroll
     document.body.style.overflow = "hidden";
-
-    // Cleanup the effect to reset overflow on component unmount
     return () => {
       document.body.style.overflow = "auto";
     };
   }, []);
 
   return (
-    <div className="bg-[#F1F5F9] h-screen w-full flex flex-col p-8">
-      <div className="flex items-center justify-between">
-        {/* Logo and Title */}
+    <div className="bg-[#F1F5F9] h-screen w-full flex flex-col">
+      <div className="flex items-center justify-between mt-6 ml-8">
         <div className="flex items-center space-x-[100px]">
           <img src={MiniLogo} className="w-[49px] h-[74px]" alt="Logo" />
-
           <div className="flex flex-col">
-            <h1 className="font-normal text-[56px] leading-[54px]">
-              Dashboard
-            </h1>
+            <h1 className="font-normal text-[56px] leading-[54px]">Dashboard</h1>
             <span className="ml-1">{currentDate}</span>
           </div>
         </div>
 
-        {/* Amount in the Right Corner */}
         <div className="flex flex-col">
           <span className="">Last month</span>
           <div className="flex">
@@ -63,33 +78,30 @@ function AdminDashBoard() {
         </div>
       </div>
 
-      {/* Main Section with Circles and Content in a Row */}
-      <div className="flex flex-row mt-10 ml-4 space-x-8">
-        {/* Sidebar with 4 circles */}
+      <div className="flex flex-row mt-10 ml-8 space-x-8">
         <div className="flex flex-col">
-          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleAdmindashboardClick}>
             <img
               src={DashBoardLogo}
               alt="Dashboard Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handlePlansClick}>
             <img
               src={PlansLogo}
               alt="Plans Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleTrainersClick}>
             <img
               src={TrainerLogo}
               alt="Trainer Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleMembersClick}>
             <img
               src={MemberLogo}
               alt="Member Logo"
@@ -97,14 +109,14 @@ function AdminDashBoard() {
             />
           </div>
 
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full overflow-hidden flex items-center justify-center mt-28">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full overflow-hidden flex items-center justify-center cursor-pointer mt-28">
             <img
               src={profile}
               alt="Profile Picture"
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer">
             <img
               src={LogoutLogo}
               alt="Logout Logo"
@@ -113,9 +125,7 @@ function AdminDashBoard() {
           </div>
         </div>
 
-        {/* Additional Content */}
-
-        <div className="bg-[#F8FAFC] h-[736px] w-[2000px] flex flex-col ml-[160px]  rounded-3xl">
+        <div className="bg-[#F8FAFC] h-[736px] w-[2000px] flex flex-col ml-[160px] rounded-tl-3xl">
           <div className="flex flex-row justify-between ml-20 mr-20 mt-10">
             <div className="flex">
               <h1 className="font-poppins font-medium text-[20px] leading-[25px] tracking-[0.1em] text-[#94A3B8] ml-20">
@@ -138,7 +148,6 @@ function AdminDashBoard() {
               <h1 className="font-poppins font-medium text-[20px] leading-[25px] tracking-[0.1em] text-[#94A3B8]">
                 ACTIVE <br /> CLASSES
               </h1>
-
               <h1 className="font-poppins font-bold text-[48px] leading-[25px] tracking-[0.1em] text-[#475569] mt-4 mr-20 ml-4">
                 021
               </h1>
@@ -149,14 +158,244 @@ function AdminDashBoard() {
               <img src={Logo} className="w-[350px] justify-center" alt="Logo" />
             </div>
             <div className="flex flex-col justify-center items-center ml-20">
-              <Button label="Add plans" textcolor="#64748B" type="submit" />
-              <Button label="Add Classes" textcolor="#64748B" type="submit" />
-              <Button label="Add trainers" textcolor="#64748B" type="submit" />
-              <Button label="Add Members" textcolor="#64748B" type="submit" />
+              <Button
+                label="Add plans"
+                textcolor="#64748B"
+                eventname={() => setShowAddPlanPopup(true)}  
+              />
+              <Button 
+                label="Add Classes"  
+                textcolor="#64748B" 
+                eventname={() => setShowAddClassPopup(true)} 
+              />
+              <Button 
+                label="Add trainers" 
+                textcolor="#64748B"  
+                eventname={() => setShowAddTrainerPopup(true)} 
+              />
+              <Button 
+                label="Add Members"  
+                textcolor="#64748B" 
+                eventname={() => setShowAddMemberPopup(true)} 
+              />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Popup Form for Add Plan */}
+      {showAddPlanPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 w-[500px]">
+            <h2 className="text-2xl font-semibold mb-4">Add Plan</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Plan Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter plan name"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Price
+                </label>
+                <input
+                  type="number"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter price"
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#475569] text-white rounded-lg"
+                  onClick={() => setShowAddPlanPopup(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#6366F1] text-white rounded-lg"
+                >
+                  Add Plan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Popup Form for Add Class */}
+      {showAddClassPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 w-[500px]">
+            <h2 className="text-2xl font-semibold mb-4">Add Class</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Class Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter class name"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  day
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter day"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Duration
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter class duration"
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#475569] text-white rounded-lg"
+                  onClick={() => setShowAddClassPopup(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#6366F1] text-white rounded-lg"
+                >
+                  Add Class
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Popup Form for Add Trainer */}
+      {showAddTrainerPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 w-[500px]">
+            <h2 className="text-2xl font-semibold mb-4">Add Trainer</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Trainer Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter trainer name"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Expertise
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter trainer expertise"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  E mail
+                </label>
+                <input
+                  type="emali"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter email"
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#475569] text-white rounded-lg"
+                  onClick={() => setShowAddTrainerPopup(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#6366F1] text-white rounded-lg"
+                >
+                  Add Trainer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Popup Form for Add Member */}
+      {showAddMemberPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 w-[500px]">
+            <h2 className="text-2xl font-semibold mb-4">Add Member</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Member Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter member name"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Member Type
+                </label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter member type"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-[#64748B] mb-1">
+                  Member Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter member email"
+                />
+              </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#475569] text-white rounded-lg"
+                  onClick={() => setShowAddMemberPopup(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#6366F1] text-white rounded-lg"
+                >
+                  Add Member
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

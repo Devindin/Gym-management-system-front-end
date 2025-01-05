@@ -37,7 +37,6 @@ function Login() {
         >
           {({ errors, touched, handleChange, values }) => (
             <Form className="flex flex-col w-full space-y-5">
-              {/* Form Fields */}
               
               <InputField
                 label="E mail"
@@ -57,13 +56,10 @@ function Login() {
                 values={values}
               />
              
-
-              {/* Display Login Error */}
               {loginError && (
                 <p className="text-red-600 text-[12px] mt-1">{loginError}</p>
               )}
 
-              {/* Right Align Login Button */}
               <div className="flex justify-end mr-2">
                 <PrimaryButton
                   label="Login"
@@ -73,12 +69,11 @@ function Login() {
                 />
               </div>
 
-              {/* Registration Link */}
               <div className="w-full flex flex-row justify-end mt-3 ">
                 <h5 className="text-[12px] text-white mr-2">
                 Already have an account?{" "}
                   <span className="text-[#A5B4FC]">
-                    <Link to="/login">Sign up</Link>
+                    <Link to="/signup">Sign up</Link>
                   </span>
                 </h5>
               </div>
