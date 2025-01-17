@@ -9,6 +9,8 @@ import TrainerLogo from "../assets/Trainers.png";
 import LogoutLogo from "../assets/Logout.png";
 import Button from "../components/Button";
 import profile from "../assets/profile.png";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 function AdminDashBoard() {
   const [currentDate, setCurrentDate] = useState("");
@@ -17,24 +19,112 @@ function AdminDashBoard() {
   const [showAddTrainerPopup, setShowAddTrainerPopup] = useState(false);
   const [showAddMemberPopup, setShowAddMemberPopup] = useState(false);
 
+  const [planName, setPlanName] = useState("");
+  const [price, setPrice] = useState("");
+  const [plans, setPlans] = useState([]);
+
+  const [className, setClassName] = useState("");
+  const [day, setDay] = useState("");
+  const [duration, setDuration] = useState("");
+  //Trainer
+  const [trainerName, setTrainerName] = useState("");
+  const[expertise,setExpertise] = useState("");
+  const[traineremail,setTraineremail] = useState("");
+  //Member
+  const [memberName, setMemberName] = useState("");
+  const [memberEmail, setmemberEmail] = useState("");
+  const [memberType, setMemberType] = useState("");
+  
+  
+
   const navigate = useNavigate();
 
+  const handleAddPlan = async (e) => {
+    e.preventDefault();
+    try {
+      // Add plan to Firestore
+      await addDoc(collection(db, "plans"), { planName, price });
+      alert("Plan added successfully!");
+      setShowAddPlanPopup(false);
+      setPlanName("");
+      setPrice("");
+      fetchPlans(); // Refresh the plans list
+    } catch (error) {
+      console.error("Error adding plan:", error);
+    }
+  };
+
+  const fetchPlans = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "plans"));
+      const plansList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPlans(plansList);
+    } catch (error) {
+      console.error("Error fetching plans:", error);
+    }
+  };
+
+  // Fetch plans on component mount
+  React.useEffect(() => {
+    fetchPlans();
+  }, []);
+
+  const handleAddClass = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "classes"), { className, day, duration });
+      alert("Class added successfully!");
+      setShowAddClassPopup(false);
+      setClassName("");
+      setDay("");
+      setDuration("");
+    } catch (error) {
+      console.error("Error adding class:", error);
+    }
+  };
+  
+  const handleAddTrainer = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "trainers"), { trainerName,expertise,traineremail });
+      alert("Trainer added successfully!");
+      setShowAddTrainerPopup(false);
+      setTrainerName("");
+    } catch (error) {
+      console.error("Error adding trainer:", error);
+    }
+  };
+  
+  const handleAddMember = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "members"), { memberName,memberType,memberEmail });
+      alert("Member added successfully!");
+      setShowAddMemberPopup(false);
+      setMemberName("");
+    } catch (error) {
+      console.error("Error adding member:", error);
+    }
+  };
+
   const handlePlansClick = () => {
-    navigate("/plansAndClasses"); 
+    navigate("/plansAndClasses");
   };
 
   const handleTrainersClick = () => {
-    navigate("/trainers"); 
+    navigate("/trainers");
   };
 
   const handleMembersClick = () => {
-    navigate("/members"); 
+    navigate("/members");
   };
 
   const handleAdmindashboardClick = () => {
-    navigate("/admindashBoard"); 
+    navigate("/admindashBoard");
   };
-  
 
   useEffect(() => {
     const date = new Date();
@@ -60,7 +150,9 @@ function AdminDashBoard() {
         <div className="flex items-center space-x-[100px]">
           <img src={MiniLogo} className="w-[49px] h-[74px]" alt="Logo" />
           <div className="flex flex-col">
-            <h1 className="font-normal text-[56px] leading-[54px]">Dashboard</h1>
+            <h1 className="font-normal text-[56px] leading-[54px]">
+              Dashboard
+            </h1>
             <span className="ml-1">{currentDate}</span>
           </div>
         </div>
@@ -80,28 +172,40 @@ function AdminDashBoard() {
 
       <div className="flex flex-row mt-10 ml-8 space-x-8">
         <div className="flex flex-col">
-          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleAdmindashboardClick}>
+          <div
+            className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleAdmindashboardClick}
+          >
             <img
               src={DashBoardLogo}
               alt="Dashboard Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handlePlansClick}>
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handlePlansClick}
+          >
             <img
               src={PlansLogo}
               alt="Plans Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleTrainersClick}>
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleTrainersClick}
+          >
             <img
               src={TrainerLogo}
               alt="Trainer Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer" onClick={handleMembersClick}>
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleMembersClick}
+          >
             <img
               src={MemberLogo}
               alt="Member Logo"
@@ -161,22 +265,22 @@ function AdminDashBoard() {
               <Button
                 label="Add plans"
                 textcolor="#64748B"
-                eventname={() => setShowAddPlanPopup(true)}  
+                eventname={() => setShowAddPlanPopup(true)}
               />
-              <Button 
-                label="Add Classes"  
-                textcolor="#64748B" 
-                eventname={() => setShowAddClassPopup(true)} 
+              <Button
+                label="Add Classes"
+                textcolor="#64748B"
+                eventname={() => setShowAddClassPopup(true)}
               />
-              <Button 
-                label="Add trainers" 
-                textcolor="#64748B"  
-                eventname={() => setShowAddTrainerPopup(true)} 
+              <Button
+                label="Add trainers"
+                textcolor="#64748B"
+                eventname={() => setShowAddTrainerPopup(true)}
               />
-              <Button 
-                label="Add Members"  
-                textcolor="#64748B" 
-                eventname={() => setShowAddMemberPopup(true)} 
+              <Button
+                label="Add Members"
+                textcolor="#64748B"
+                eventname={() => setShowAddMemberPopup(true)}
               />
             </div>
           </div>
@@ -188,7 +292,7 @@ function AdminDashBoard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 w-[500px]">
             <h2 className="text-2xl font-semibold mb-4">Add Plan</h2>
-            <form>
+            <form onSubmit={handleAddPlan}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#64748B] mb-1">
                   Plan Name
@@ -197,6 +301,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter plan name"
+                  value={planName}
+                  onChange={(e) => setPlanName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -207,6 +313,8 @@ function AdminDashBoard() {
                   type="number"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
               <div className="flex justify-end space-x-4">
@@ -234,7 +342,7 @@ function AdminDashBoard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 w-[500px]">
             <h2 className="text-2xl font-semibold mb-4">Add Class</h2>
-            <form>
+            <form onSubmit={handleAddClass}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#64748B] mb-1">
                   Class Name
@@ -243,6 +351,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter class name"
+                  value={className}
+            onChange={(e) => setClassName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -253,6 +363,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter day"
+                  value={day}
+            onChange={(e) => setDay(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -263,6 +375,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter class duration"
+                  value={duration}
+            onChange={(e) => setDuration(e.target.value)}
                 />
               </div>
               <div className="flex justify-end space-x-4">
@@ -290,7 +404,7 @@ function AdminDashBoard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 w-[500px]">
             <h2 className="text-2xl font-semibold mb-4">Add Trainer</h2>
-            <form>
+            <form onSubmit={handleAddTrainer}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#64748B] mb-1">
                   Trainer Name
@@ -299,6 +413,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter trainer name"
+                  value={trainerName}
+                  onChange={(e) => setTrainerName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -309,6 +425,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter trainer expertise"
+                  value={expertise}
+                  onChange={(e) => setExpertise(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -319,6 +437,8 @@ function AdminDashBoard() {
                   type="emali"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter email"
+                  value={traineremail}
+                  onChange={(e) => setTraineremail(e.target.value)}
                 />
               </div>
               <div className="flex justify-end space-x-4">
@@ -346,7 +466,7 @@ function AdminDashBoard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 w-[500px]">
             <h2 className="text-2xl font-semibold mb-4">Add Member</h2>
-            <form>
+            <form onSubmit={handleAddMember}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-[#64748B] mb-1">
                   Member Name
@@ -355,6 +475,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter member name"
+                  value={memberName}
+                  onChange={(e) => setMemberName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -365,6 +487,8 @@ function AdminDashBoard() {
                   type="text"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter member type"
+                  value={memberType}
+                  onChange={(e) => setMemberType(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -375,6 +499,8 @@ function AdminDashBoard() {
                   type="email"
                   className="w-full border rounded-lg px-3 py-2"
                   placeholder="Enter member email"
+                  value={memberEmail}
+                  onChange={(e) => setmemberEmail(e.target.value)}
                 />
               </div>
               <div className="flex justify-end space-x-4">

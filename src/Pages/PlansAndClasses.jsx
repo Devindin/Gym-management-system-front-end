@@ -7,9 +7,28 @@ import MemberLogo from "../assets/Members.png";
 import TrainerLogo from "../assets/Trainers.png";
 import LogoutLogo from "../assets/Logout.png";
 import profile from "../assets/profile.png";
+import { useNavigate } from "react-router-dom";
 
 function PlansAndClasses() {
   const [currentDate, setCurrentDate] = useState("");
+
+  const navigate = useNavigate();
+
+  const handlePlansClick = () => {
+    navigate("/plansAndClasses");
+  };
+
+  const handleTrainersClick = () => {
+    navigate("/trainers");
+  };
+
+  const handleMembersClick = () => {
+    navigate("/members");
+  };
+
+  const handleAdmindashboardClick = () => {
+    navigate("/admindashBoard");
+  };
 
   useEffect(() => {
     const date = new Date();
@@ -22,7 +41,7 @@ function PlansAndClasses() {
   }, []);
 
   return (
-    <div className="bg-[#F1F5F9]  w-full flex flex-col ">
+    <div className="bg-[#F1F5F9]  w-full h-full flex flex-col ">
       <div className="flex items-center justify-between mt-6 ml-8">
         <div className="flex items-center space-x-[100px]">
           <img src={MiniLogo} className="w-[49px] h-[74px]" alt="Logo" />
@@ -38,7 +57,9 @@ function PlansAndClasses() {
 
       <div className="flex flex-row mt-10 ml-8 space-x-8">
         <div className="flex flex-col">
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+          onClick={handleAdmindashboardClick}
+          >
             <img
               src={DashBoardLogo}
               alt="Dashboard Logo"
@@ -46,21 +67,27 @@ function PlansAndClasses() {
             />
           </div>
 
-          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+          onClick={handlePlansClick}
+          >
             <img
               src={PlansLogo}
               alt="Plans Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+          onClick={handleTrainersClick}
+          >
             <img
               src={TrainerLogo}
               alt="Trainer Logo"
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+          onClick={handleMembersClick}
+          >
             <img
               src={MemberLogo}
               alt="Member Logo"
@@ -84,7 +111,7 @@ function PlansAndClasses() {
           </div>
         </div>
 
-        <div className="bg-[#F8FAFC] w-[2000px]  flex flex-col ml-[160px]  rounded-tl-3xl">
+        <div className="bg-[#F8FAFC] w-[2000px]  flex flex-col ml-[160px]  rounded-tl-3xl overflow-y-auto">
           <h1 className="mt-8 ml-8 font-semibold text-[24px]">Plans</h1>
 
           <div className="grid grid-cols-3 mb-10 ml-10 mr-20">
