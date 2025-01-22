@@ -33,6 +33,10 @@ function Members() {
     navigate("/admindashBoard");
   };
 
+  const handleLogoutClick = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
     const date = new Date();
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -53,8 +57,20 @@ function Members() {
       .catch((error) => console.error("Error fetching members:", error));
   }, []);
 
-  
-  
+  // Add handleDeleteTrainer function
+  const handleDeleteMember = (memberId) => {
+    setMembers((prevMembers) =>
+      prevMembers.filter((member) => member.id !== memberId)
+    );
+  };
+
+  const handleUpdateMember = (memberId, updatedDetails) => {
+    setMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId ? { ...member, ...updatedDetails } : member
+      )
+    );
+  };
 
   return (
     <div className="bg-[#F1F5F9]  w-full h-screen flex flex-col">
@@ -70,7 +86,7 @@ function Members() {
         <div className="flex flex-col mr-6">
           <span className="">Total Members</span>
           <div className="flex justify-end">
-          <h1 className="font-semibold text-[36px] leading-[40px] text-[#008800] mr-2 ">
+            <h1 className="font-semibold text-[36px] leading-[40px] text-[#008800] mr-2 ">
               {members.length}
             </h1>
           </div>
@@ -79,8 +95,9 @@ function Members() {
 
       <div className="flex flex-row mt-10 ml-8 space-x-8">
         <div className="flex flex-col">
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleAdmindashboardClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleAdmindashboardClick}
           >
             <img
               src={DashBoardLogo}
@@ -89,8 +106,9 @@ function Members() {
             />
           </div>
 
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handlePlansClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handlePlansClick}
           >
             <img
               src={PlansLogo}
@@ -98,8 +116,9 @@ function Members() {
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleTrainersClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleTrainersClick}
           >
             <img
               src={TrainerLogo}
@@ -107,8 +126,9 @@ function Members() {
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleMembersClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleMembersClick}
           >
             <img
               src={MemberLogo}
@@ -124,7 +144,9 @@ function Members() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer"
+          onClick={handleLogoutClick}
+          >
             <img
               src={LogoutLogo}
               alt="Logout Logo"
@@ -148,22 +170,22 @@ function Members() {
             </div>
           </div>
           {members.length === 0 ? (
-              <p className="text-center mt-4">No members available</p>
-            ) : (
-              members.map((member, index) => (
-                <MemberField
-                  key={index}
-                  memberName={member.memberName}
-                  memberType={member.memberType}
-                  memberEmail={member.memberEmail}
-                  
-                />
-              ))
-            )}
-         
+            <p className="text-center mt-4">No members available</p>
+          ) : (
+            members.map((member) => (
+              <MemberField
+                key={member.id} // Ensure `id` is unique and available
+                memberId={member.id} // Pass the `id` properly
+                memberName={member.memberName}
+                memberType={member.memberType}
+                memberEmail={member.memberEmail}
+                onDelete={handleDeleteMember} // Pass delete handler
+                onUpdate={handleUpdateMember} // Pass update handler
+              />
+            ))
+          )}
         </div>
       </div>
-      
     </div>
   );
 }

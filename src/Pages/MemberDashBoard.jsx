@@ -5,9 +5,17 @@ import TrainerLogo from "../assets/Trainers.png";
 import LogoutLogo from "../assets/Logout.png";
 import profile from "../assets/profile.png";
 import Home from "../assets/Home.png";
+import axios from "axios";
+import  {auth}  from "../firebase"; // Adjust the path to your Firebase config file
+import { useLocation } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function MemberDashBoard() {
+
   const [currentDate, setCurrentDate] = useState("");
+  const { state } = useLocation();  // Retrieve state passed via navigate
+  const { name, email } = state || {};
 
   useEffect(() => {
     const date = new Date();
@@ -26,6 +34,9 @@ function MemberDashBoard() {
       document.body.style.overflow = "auto";
     };
   }, []);
+  
+  
+  
   return (
     <div className="bg-[#F1F5F9] h-screen w-full flex flex-col ">
       <div className="flex items-center justify-between mt-6 ml-8">
@@ -43,7 +54,7 @@ function MemberDashBoard() {
           <div className="flex items-center mr-6">
             <div className="w-[12px] h-[12px] bg-[#22C55E] rounded-full mr-4 mb-6 "></div>
             <h1 className="font-semibold text-[36px] leading-[40px] text-[#F0ABFC]">
-              GOLD MEMBER
+              Member
             </h1>
           </div>
         </div>
@@ -89,8 +100,8 @@ function MemberDashBoard() {
         <div className="bg-[#F8FAFC] w-full h-screen flex items-center justify-end ml-[160px] rounded-tl-3xl">
           <div className="text-right mr-20 mb-40">
             <span className="text-[16px] block">Since 13 Nov, 2023</span>
-            <h1 className="text-[96px] font-bold">JHON DEO</h1>
-            <span className="text-[20px] block ">jhondeo@example.com</span>
+            <h1 className="text-[96px] font-bold"> {name}</h1>
+            <span className="text-[20px] block ">{email}</span>
           </div>
         </div>
       </div>

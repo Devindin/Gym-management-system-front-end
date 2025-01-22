@@ -10,6 +10,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import InputPassword from "../components/InputPassword";
 import Logo from "../assets/Logo.png";
 
+
 function Login() {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(null);
@@ -38,12 +39,18 @@ function Login() {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         const role = userData.role;
+        const name = userData.name; 
+        
 
         // Navigate based on role
         if (role === "trainer") {
-          navigate("/trainerDashBoard");
+          navigate("/trainerDashBoard", {
+            state: { name, email },
+          });
         } else if (role === "member") {
-          navigate("/memberDashBoard");
+          navigate("/memberDashBoard", { 
+            state: { name, email }, 
+          });
         } else if (role === "admin") {
           navigate("/admindashBoard");
         } else {

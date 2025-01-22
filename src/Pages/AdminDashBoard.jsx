@@ -126,6 +126,10 @@ function AdminDashBoard() {
     navigate("/admindashBoard");
   };
 
+  const handleLogoutClick = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
     const date = new Date();
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -220,7 +224,9 @@ function AdminDashBoard() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer"
+          onClick={handleLogoutClick}
+          >
             <img
               src={LogoutLogo}
               alt="Logout Logo"

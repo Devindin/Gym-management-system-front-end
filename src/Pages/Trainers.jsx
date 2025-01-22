@@ -33,6 +33,10 @@ function Trainers() {
     navigate("/admindashBoard");
   };
 
+  const handleLogoutClick = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
     const date = new Date();
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -53,10 +57,19 @@ function Trainers() {
       .catch((error) => console.error("Error fetching trainers:", error));
   }, []);
 
+
   // Add handleDeleteTrainer function
   const handleDeleteTrainer = (trainerId) => {
     setTrainers((prevTrainers) =>
       prevTrainers.filter((trainer) => trainer.id !== trainerId)
+    );
+  };
+
+  const handleUpdateTrainer = (trainerId, updatedDetails) => {
+    setTrainers((prev) =>
+      prev.map((trainer) =>
+        trainer.id === trainerId ? { ...trainer, ...updatedDetails } : trainer
+      )
     );
   };
 
@@ -127,7 +140,9 @@ function Trainers() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer"
+          onClick={handleLogoutClick}
+          >
             <img
               src={LogoutLogo}
               alt="Logout Logo"
@@ -162,6 +177,7 @@ function Trainers() {
                   traineremail={trainer.traineremail || "N/A"}
                   trainerId={trainer.id}
                   onDelete={handleDeleteTrainer}
+                  onUpdate={handleUpdateTrainer}
                 />
               ))
             )}

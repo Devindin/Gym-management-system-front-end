@@ -8,9 +8,14 @@ import TrainerLogo from "../assets/Trainers.png";
 import LogoutLogo from "../assets/Logout.png";
 import profile from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
+import ClassCard from "../components/ClassCard";
+import PlanCard from "../components/PlanCard";
 
 function PlansAndClasses() {
   const [currentDate, setCurrentDate] = useState("");
+  const [classes, setClasses] = useState([]);
+  const [plans, setPlans] = useState([]);
+  
 
   const navigate = useNavigate();
 
@@ -30,6 +35,10 @@ function PlansAndClasses() {
     navigate("/admindashBoard");
   };
 
+  const handleLogoutClick = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
     const date = new Date();
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -38,7 +47,34 @@ function PlansAndClasses() {
       day: "numeric",
     });
     setCurrentDate(formattedDate);
+
+    // Fetch classes from backend
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/classes");
+        const data = await response.json();
+        setClasses(data);
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+      }
+    };
+
+    fetchClasses();
+
+    const fetchPlans = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/plans");
+        const data = await response.json();
+        setPlans(data);
+      } catch (error) {
+        console.error("Error fetching pans:", error);
+      }
+    };
+
+    fetchPlans();
   }, []);
+
+  
 
   return (
     <div className="bg-[#F1F5F9]  w-full h-full flex flex-col ">
@@ -57,8 +93,9 @@ function PlansAndClasses() {
 
       <div className="flex flex-row mt-10 ml-8 space-x-8">
         <div className="flex flex-col">
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleAdmindashboardClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleAdmindashboardClick}
           >
             <img
               src={DashBoardLogo}
@@ -67,8 +104,9 @@ function PlansAndClasses() {
             />
           </div>
 
-          <div className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handlePlansClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#6366F1] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handlePlansClick}
           >
             <img
               src={PlansLogo}
@@ -76,8 +114,9 @@ function PlansAndClasses() {
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleTrainersClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleTrainersClick}
           >
             <img
               src={TrainerLogo}
@@ -85,8 +124,9 @@ function PlansAndClasses() {
               className="w-[24px] h-[24px]"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
-          onClick={handleMembersClick}
+          <div
+            className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-6 cursor-pointer"
+            onClick={handleMembersClick}
           >
             <img
               src={MemberLogo}
@@ -102,7 +142,9 @@ function PlansAndClasses() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4">
+          <div className="w-[48px] h-[48px] bg-[#C7D2FE] rounded-full flex items-center justify-center mt-4 cursor-pointer"
+          onClick={handleLogoutClick}
+          >
             <img
               src={LogoutLogo}
               alt="Logout Logo"
@@ -115,116 +157,30 @@ function PlansAndClasses() {
           <h1 className="mt-8 ml-8 font-semibold text-[24px]">Plans</h1>
 
           <div className="grid grid-cols-3 mb-10 ml-10 mr-20">
-            <div className="bg-gradient-to-r from-[#4C1D95] to-[#C4B5FD] h-[196px] w-[400px] flex  mt-10 rounded-[35px] items-center px-6 ">
-              <img
-                src={Logo}
-                className="h-[100px] w-[100px] object-contain"
-                alt="Logo"
-              />
-              <div className="flex flex-col ml-4 items-end">
-                <h1 className="text-black  text-[30px] ">Member</h1>
-                <h1 className="text-white font-poppins font-bold text-[48px] leading-[72px]">
-                  2000 LKR
-                </h1>
-              </div>
-            </div>
-            <div className="bg-gradient-to-r from-[#4C1D95] to-[#C4B5FD] h-[196px] w-[400px] flex  mt-10 rounded-[35px] items-center px-6">
-              <img
-                src={Logo}
-                className="h-[100px] w-[100px] object-contain"
-                alt="Logo"
-              />
-              <div className="flex flex-col ml-4 items-end">
-                <h1 className="text-black  text-[30px] ">Plus</h1>
-                <h1 className="text-white font-poppins font-bold text-[48px] leading-[72px]">
-                  2000 LKR
-                </h1>
-              </div>
-            </div>
-            <div className="bg-gradient-to-r from-[#4C1D95] to-[#C4B5FD] h-[196px] w-[400px] flex  mt-10 rounded-[35px] items-center px-6r ">
-              <img
-                src={Logo}
-                className="h-[100px] w-[100px] object-contain"
-                alt="Logo"
-              />
-              <div className="flex flex-col ml-4 items-end">
-                <h1 className="text-black  text-[30px] ">Gold</h1>
-                <h1 className="text-white font-poppins font-bold text-[48px] leading-[72px]">
-                  2000 LKR
-                </h1>
-              </div>
-            </div>
+           
+          {plans.map((plan) => (
+            <PlanCard
+              key={plan.id}
+              planName={plan.planName}
+              price={plan.price}
+            />
+          ))}
+            
+            
           </div>
           <h1 className="ml-8 font-semibold text-[24px]">Classes</h1>
 
           <div className="grid grid-cols-3 mb-10 ml-10 mr-20">
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex mt-10 rounded-[35px] items-center px-6 ">
-              <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
-
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex  mt-10 rounded-[35px] items-center px-6">
-            <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex  mt-10 rounded-[35px] items-center px-6 ">
-            <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex  mt-10 rounded-[35px] items-center px-6 mr-20">
-            <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex  mt-10 rounded-[35px] items-center px-6 mr-20">
-            <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
-            <div className="bg-[#F1F5F9] border-[3px] border-[#94A3B8] h-[170px] w-[350px] flex  mt-10 rounded-[35px] items-center px-6 mr-20">
-            <div className="flex flex-col items-end text-right w-full">
-                <h1 className="text-[#334155] text-[24px] font-bold">
-                  Beginner BOX FIT
-                </h1>
-                <h1 className="text-[#334155] text-[16px]">Saturday</h1>
-                <h1 className="text-[#334155] text-[16px]">
-                  2:00 P.M - 4:00 P.M
-                </h1>
-              </div>
-            </div>
+          
+          {classes.map((cls) => (
+              <ClassCard
+                key={cls.id}
+                className={cls.className}
+                day={cls.day}
+                duration={cls.duration}
+              />
+            ))}
+       
           </div>
         </div>
       </div>
